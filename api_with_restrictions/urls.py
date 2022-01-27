@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from advertisements.views import AdvertisementViewSet
 from rest_framework.routers import DefaultRouter
+from rest_framework.authentication import views as auth_views
 
 router = DefaultRouter()
 router.register('advertisements', AdvertisementViewSet)
@@ -25,4 +26,5 @@ router.register('advertisements', AdvertisementViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
+    path('api-token-auth/', auth_views.obtain_auth_token)
 ] + router.urls
