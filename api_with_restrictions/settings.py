@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'z5^+-9&b+ok(d%hl!%lbft$$bd(yz$3g5cq_ch6pw5l#8+ap+-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'debug_toolbar',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
@@ -82,7 +82,10 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'user': '20/min',
         'anon': '10/min',
-    }
+    },
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ]
 }
 
 WSGI_APPLICATION = 'api_with_restrictions.wsgi.application'
@@ -143,3 +146,7 @@ STATIC_URL = '/static/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]

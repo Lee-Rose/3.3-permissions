@@ -1,9 +1,9 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import BasePermission
 
 class IsOwnerOrReadOnly(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         """только создатель объекта может его менять"""
-        if request.method in SAFE_METHODS:
+        if request.method == 'GET':
             return True
         return obj.creator == request.user

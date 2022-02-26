@@ -34,18 +34,22 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         # обратите внимание на `context` – он выставляется автоматически
         # через методы ViewSet.
         # само поле при этом объявляется как `read_only=True`
-        validated_data["creator"] = self.context["request"].user
+        validated_data['creator'] = self.context['request'].user
         return super().create(validated_data)
 
     def validate(self, data):
         """Метод для валидации. Вызывается при создании и обновлении."""
 
-        user_open_ads = 0
-        if data['status'] == 'OPEN' or data['status'] == 'Открыто':
-            if user_open_ads <= 10:
-                user_open_ads += 1
-            else:
-                return serializers.ValidationError('You can not have more than 10 open ads')
+        get_status = data.get('status')
+        if get_status in ['OPEN', 'Открыто'] \
+        or self.context['request'].method == 'POST':
+            #не понимаю как проверить 10 открытых статусов у пользователя
+
+            return data
+        else:
+            return serializers.ValidationError('You can not have more than 10 open ads')
 
 
-        return data
+
+
+
