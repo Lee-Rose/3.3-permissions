@@ -40,7 +40,8 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         get_status = data.get('status')
         if get_status in ['OPEN', 'Открыто'] \
         or self.context['request'].method == 'POST':
-             advs_user = data.creator.all('status').filter('OPEN')
+             advs_user = data.get('user')
+             advs_user = advs_user.get('status').all().filter('OPEN')
              if advs_user.count('OPEN') > 10:
                  return serializers.ValidationError('You can not have more than 10 open ads')
         return data
