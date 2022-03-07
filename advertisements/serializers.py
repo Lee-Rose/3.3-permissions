@@ -16,14 +16,11 @@ class UserSerializer(serializers.ModelSerializer):
 class AdvertisementSerializer(serializers.ModelSerializer):
     """Serializer для объявления."""
 
-    creator = UserSerializer(
-        read_only=True,
-    )
-
     class Meta:
         model = Advertisement
         fields = ('id', 'title', 'description', 'creator',
                   'status', 'created_at', )
+        read_only_fields = ['creator']
 
     def create(self, validated_data):
         """Метод для создания"""
@@ -43,11 +40,11 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         get_status = data.get('status')
         if get_status in ['OPEN', 'Открыто'] \
         or self.context['request'].method == 'POST':
-            #не понимаю как проверить 10 открытых статусов у пользователя
+             advs_user = data.creator.all('status').filter('OPEN')
+             if advs_user.count('OPEN') > 10:
+                 return serializers.ValidationError('You can not have more than 10 open ads')
+        return data
 
-            return data
-        else:
-            return serializers.ValidationError('You can not have more than 10 open ads')
 
 
 

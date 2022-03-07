@@ -13,7 +13,6 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
 from advertisements.views import AdvertisementViewSet
@@ -28,5 +27,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api-token-auth/', views.obtain_auth_token),
-    path('__debug__/', include(debug_toolbar.urls)),
+
 ] + router.urls

@@ -6,4 +6,4 @@ class IsOwnerOrReadOnly(BasePermission):
         """только создатель объекта может его менять"""
         if request.method == 'GET':
             return True
-        return obj.creator == request.user
+        return request.user == obj.creator
