@@ -12,8 +12,8 @@ from .permissions import IsOwnerOrReadOnly
 
 class AdvertisementViewSet(ModelViewSet):
     """ViewSet для объявлений."""
-    user = Advertisement.objects.get('creator')
-    queryset = Advertisement.objects.all().filter(status='OPEN', creator=user)
+
+    queryset = Advertisement.objects.all().filter(status='OPEN', creator=creator)#как подставить юзера?
     serializer_class = AdvertisementSerializer
     authentication_classes = [TokenAuthentication]
     filter_backends = [DjangoFilterBackend,]
