@@ -2,6 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
+from django.template.context_processors import request
 
 from .filters import AdvertisementFilter
 from .models import Advertisement
@@ -11,8 +12,8 @@ from .permissions import IsOwnerOrReadOnly
 
 class AdvertisementViewSet(ModelViewSet):
     """ViewSet для объявлений."""
-
-    queryset = Advertisement.objects.all()
+    user = Advertisement.objects.get('creator')
+    queryset = Advertisement.objects.all().filter(status='OPEN', creator=user)
     serializer_class = AdvertisementSerializer
     authentication_classes = [TokenAuthentication]
     filter_backends = [DjangoFilterBackend,]
@@ -27,5 +28,6 @@ class AdvertisementViewSet(ModelViewSet):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             return [IsAuthenticated(), IsOwnerOrReadOnly()]
         return [IsAuthenticatedOrReadOnly()]
+
 
 
