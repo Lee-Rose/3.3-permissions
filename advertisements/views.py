@@ -1,8 +1,10 @@
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.admin import User
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
-from django.template.context_processors import request
+
 
 from .filters import AdvertisementFilter
 from .models import Advertisement
@@ -13,7 +15,7 @@ from .permissions import IsOwnerOrReadOnly
 class AdvertisementViewSet(ModelViewSet):
     """ViewSet для объявлений."""
 
-    queryset = Advertisement.objects.all().filter(status='OPEN', creator=creator)#как подставить юзера?
+    queryset = Advertisement.objects.all().filter(status='OPEN', creator=id)#как подставить юзера?
     serializer_class = AdvertisementSerializer
     authentication_classes = [TokenAuthentication]
     filter_backends = [DjangoFilterBackend,]

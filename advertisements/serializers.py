@@ -20,7 +20,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         model = Advertisement
         fields = ('id', 'title', 'description', 'creator',
                   'status', 'created_at', )
-        read_only_fields = ['creator']
+        read_only_fields = ['id','creator']
 
     def create(self, validated_data):
         """Метод для создания"""
