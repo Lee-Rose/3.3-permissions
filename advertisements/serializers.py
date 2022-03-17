@@ -19,8 +19,8 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertisement
         fields = ('id', 'title', 'description', 'creator',
-                  'status', 'created_at', )
-        read_only_fields = ['id','creator']
+                  'status', 'created_at',)
+        read_only_fields = ['user','creator']
 
     def create(self, validated_data):
         """Метод для создания"""
@@ -40,10 +40,11 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         get_status = data.get('status')
         if get_status in ['OPEN', 'Открыто'] \
         or self.context['request'].method == 'POST':
-             user = self.context['request'].user
-             if user.count('OPEN') > 10:
-                 return serializers.ValidationError('You can not have more than 10 open ads')
+            user = self.context['request'].user
+            if Advertisement.objects.filter(status='OPEN', creator=user).count() >= 10:
+                 raise serializers.ValidationError('You can not have more than 10 open ads')
         return data
+
 
 
 
